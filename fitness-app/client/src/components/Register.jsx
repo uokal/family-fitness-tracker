@@ -35,6 +35,17 @@ export default function Register() {
             required
           />
         </Form.Group>
+           <Form.Group>
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter username"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
+        </Form.Group>
+        
 
         <Form.Group>
           <Form.Label>Password</Form.Label>
@@ -54,6 +65,7 @@ export default function Register() {
             onChange={(e) => setForm({ ...form, role: e.target.value })}
             required
           >
+            <option value="-">Select Option</option>
             <option value="Grandfather">Grandfather</option>
             <option value="Father">Father</option>
             <option value="Child">Child</option>

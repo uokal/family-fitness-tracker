@@ -1,14 +1,16 @@
-const pool = require("../config/db");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const User = require('./userModel');
 
-const logFitnessData = async (userId, steps, diet, tablet) => {
-    return pool.query(
-        "INSERT INTO fitness (user_id, steps, diet, tablet) VALUES ($1, $2, $3, $4) RETURNING *",
-        [userId, steps, diet, tablet]
-    );
-};
+const Fitness = sequelize.define('Fitness', {
+    startTime: { type: DataTypes.DATE, allowNull: false },
+    endTime: { type: DataTypes.DATE, allowNull: false },
+    steps: { type: DataTypes.INTEGER, allowNull: false },
+    waterDrink: { type: DataTypes.FLOAT, allowNull: false },
+    otherDiet: { type: DataTypes.STRING }
+}, { timestamps: true });
 
-const getFitnessData = async (userId) => {
-    return pool.query("SELECT * FROM fitness WHERE user_id = $1", [userId]);
-};
+Fitness.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+User.hasMany(Fitness, { foreignKey: 'userId' });
 
-module.exports = { logFitnessData, getFitnessData };
+module.exports = Fitness;

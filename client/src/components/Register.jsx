@@ -14,7 +14,7 @@ export default function Register() {
     }
 
     try {
-      await axios.post("http://localhost:5000/auth/register", form);
+      await axios.post("https://family-fitness-tracker.onrender.com/auth/register", form);
       toast.success("User registered successfully!");
     } catch (error) {
       toast.error("Registration failed!");

@@ -16,7 +16,7 @@ const Fitness = () => {
     const token = localStorage.getItem('token');
 
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:5000/api/fitness',
+        baseURL: 'https://family-fitness-tracker.onrender.com/api/fitness',
         headers: { Authorization: `Bearer ${token}` }
     });
 

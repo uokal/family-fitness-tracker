@@ -12,7 +12,7 @@ export default function DashboardWithCharts() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fitness/get', {
+        const response = await axios.get('https://family-fitness-tracker.onrender.com/api/fitness/get', {
           headers: {
             Authorization: `Bearer ${token}`
           }

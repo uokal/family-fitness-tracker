@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
 
   const login = async (form) => {
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", form);
+      const res = await axios.post("https://family-fitness-tracker.onrender.com/auth/login", form);
       const userData = {
         role: res.data.role,
         username: res.data.username

@@ -1,23 +1,23 @@
 import { useState } from "react";
 import axios from "axios";
 import { Form, Button, Container } from "react-bootstrap";
-
+import { toast } from "react-toastify";
 export default function Register() {
-  const [form, setForm] = useState({ username: "", password: "", role: "" });
+  const [form, setForm] = useState({ username: "", email: "", password: "", role: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.role) {
-      alert("Please select a role.");
+      toast.warn("Please select a role.");
       return;
     }
 
     try {
       await axios.post("http://localhost:5000/auth/register", form);
-      alert("User registered successfully!");
+      toast.success("User registered successfully!");
     } catch (error) {
-      alert("Registration failed!");
+      toast.error("Registration failed!");
     }
   };
 
@@ -35,17 +35,17 @@ export default function Register() {
             required
           />
         </Form.Group>
-           <Form.Group>
+
+        <Form.Group>
           <Form.Label>Email</Form.Label>
           <Form.Control
-            type="text"
-            placeholder="Enter username"
+            type="email"
+            placeholder="Enter email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
           />
         </Form.Group>
-        
 
         <Form.Group>
           <Form.Label>Password</Form.Label>
@@ -61,7 +61,7 @@ export default function Register() {
         <Form.Group>
           <Form.Label>Role</Form.Label>
           <Form.Select
-            value={form.role} // ✅ Ensure role is always set
+            value={form.role}
             onChange={(e) => setForm({ ...form, role: e.target.value })}
             required
           >
@@ -79,3 +79,4 @@ export default function Register() {
     </Container>
   );
 }
+

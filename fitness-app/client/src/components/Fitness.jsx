@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Table, Form, Button, Alert } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const Fitness = () => {
     const [fitnessData, setFitnessData] = useState([]);
@@ -11,7 +12,6 @@ const Fitness = () => {
         waterDrink: '',
         otherDiet: ''
     });
-    const [message, setMessage] = useState(null);
 
     const token = localStorage.getItem('token');
 
@@ -22,11 +22,11 @@ const Fitness = () => {
 
     const fetchFitnessData = async () => {
         try {
-            const { data } = await axiosInstance.get('http://localhost:5000/api/fitness/get');
+            const { data } = await axiosInstance.get('/get');
             setFitnessData(data);
         } catch (error) {
             console.error('Error fetching fitness data:', error);
-            setMessage({ type: 'danger', text: 'Failed to fetch fitness data' });
+            toast.error('Failed to fetch fitness data');
         }
     };
 
@@ -41,8 +41,8 @@ const Fitness = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axiosInstance.post('http://localhost:5000/api/fitness', formData);
-            setMessage({ type: 'success', text: 'Entry added successfully' });
+            await axiosInstance.post('/', formData);
+            toast.success('Entry added successfully');
             setFormData({
                 startTime: '',
                 endTime: '',
@@ -53,30 +53,24 @@ const Fitness = () => {
             fetchFitnessData();
         } catch (error) {
             console.error('Error submitting data:', error);
-            setMessage({ type: 'danger', text: error.response?.data?.error || 'Failed to add entry' });
+            toast.error(error.response?.data?.error || 'Failed to add entry');
         }
-    };
-
-    const handleEdit = (id) => {
-        alert(`Edit entry with ID: ${id}`);
     };
 
     const handleDelete = async (id) => {
         try {
-            await axiosInstance.delete(`http://localhost:5000/api/fitness/${id}`);
-            setMessage({ type: 'success', text: 'Entry deleted successfully' });
+            await axiosInstance.delete(`/${id}`);
+            toast.success('Entry deleted successfully');
             fetchFitnessData();
         } catch (error) {
             console.error('Error deleting entry:', error);
-            setMessage({ type: 'danger', text: 'Failed to delete entry' });
+            toast.error('Failed to delete entry');
         }
     };
 
     return (
         <Container className="mt-4">
             <h2>Fitness Tracker</h2>
-
-            {message && <Alert variant={message.type}>{message.text}</Alert>}
 
             <Form onSubmit={handleSubmit} className="mb-4">
                 <Form.Group>
@@ -162,7 +156,6 @@ const Fitness = () => {
                             <td>{entry.User?.username || 'N/A'}</td>
                             <td>{entry.User?.role || 'N/A'}</td>
                             <td>
-                                {/* <Button variant="warning" size="sm" onClick={() => handleEdit(entry.id)}>Edit</Button>{' '} */}
                                 <Button variant="danger" size="sm" onClick={() => handleDelete(entry.id)}>Delete</Button>
                             </td>
                         </tr>
